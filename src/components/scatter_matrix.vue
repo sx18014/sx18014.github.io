@@ -42,7 +42,7 @@ export default {
         { name: 'std_std', index: 7, text: 'std_std' },
       ];
 
-      var data = await axios.get('http://localhost:8080/data/all.json')
+      var data = await axios.get('http://sx18014.github.io/dist/data/all.json')
       var rawData = data.data
       var CATEGORY_DIM_COUNT = 7;
       var GAP = 2;

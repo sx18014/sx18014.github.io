@@ -25,7 +25,7 @@ export default {
   // 放所有所需函数
   methods: {
     async getJson() {
-      const ret = await axios.get('http://localhost:8080/data/CP.json')
+      const ret = await axios.get('http://sx18014.github.io/dist/data/CP.json')
       console.log(ret)
     },
     initChart () {
@@ -134,7 +134,7 @@ export default {
         }
       })
         //使用axios获取本地数据
-        await axios.get ('http://localhost:8080/data/CP.json').then(function (_data) {
+        await axios.get ('http://sx18014.github.io/dist/data/CP.json').then(function (_data) {
         let data = _data.data;
         console.log (data)
         const max = getMaxOnExtent (data)
