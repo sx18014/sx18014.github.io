@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Screen from '../views/ScreenPage.vue'
+import scatter_matrix_home from '../views/ScatterMatrixHome.vue'
 import Line from '../components/line.vue'
 import Scatter3d from '../components/scatter3d.vue'
 // import Scatter3d_dataset from '../components/scatter3d_dataset.vue'
@@ -9,6 +10,9 @@ import Sunburst2 from '../components/sunburst2.vue'
 import Bar3d from '../components/bar3d.vue'
 import Radar from '../components/radar.vue'
 import ScatterMatrix from '../components/scatter_matrix.vue'
+import CP from '../components/scatter_matrix/SM_CP.vue'
+import MOp from '../components/scatter_matrix/SM_MOp.vue'
+import MOs from '../components/scatter_matrix/SM_MOs.vue'
 
 Vue.use(VueRouter)
 
@@ -27,7 +31,17 @@ const routes: Array<RouteConfig> = [
   { path: '/sunburst2', component: Sunburst2 },
   { path: '/bar3d', component: Bar3d },
   { path: '/radar', component: Radar },
-  { path: '/scatter_matrix', component: ScatterMatrix }
+  { path: '/scatter_matrix', component: ScatterMatrix },
+
+  { // 散点矩阵主页
+    path: '/scatter_matrix_home',
+    component: scatter_matrix_home,
+    children: [
+      { path: '/SM_CP', component: CP },
+      { path: '/SM_MOp', component: MOp },
+      { path: '/SM_MOs', component: MOs }
+    ]
+  },
 ]
 
 const router = new VueRouter({

@@ -71,6 +71,8 @@
             <span>散点矩阵和平行坐标</span>
             <el-button @click="JTscattermatrix" icon='el-icon-full-screen'
             style="float: right" circle></el-button>
+            <el-button @click="JThome" icon='el-icon-s-home'
+            style="float: right" circle></el-button>
         </div>
         <div class="card-content-SM">
             <ScatterMatrix></ScatterMatrix>
@@ -114,10 +116,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Bar3d from '../components/bar3d.vue'
 import Line3d from '../components/line.vue'
 import Scatter3d_dataset from '../components/scatter3d_dataset.vue'
-import Scatter3d from '../components/scatter3d.vue'
+import Scatter3d from '../components/preview/scatter3d.vue'
 import Sunburst from '../components/sunburst.vue'
 import Sunburst2 from '../components/sunburst2.vue'
 import ScatterMatrix from '../components/scatter_matrix.vue'
+import ScatterMatrixHome from './ScatterMatrixHome.vue'
 export default {
     components: {
         Bar3d,
@@ -126,7 +129,8 @@ export default {
         Scatter3d,
         Sunburst,
         Sunburst2,
-        ScatterMatrix
+        ScatterMatrix,
+        ScatterMatrixHome
     },
     methods: {
         JTbar3d () {
@@ -149,6 +153,9 @@ export default {
         },
         JTscattermatrix () {
             this.$router.push('/scatter_matrix')
+        },
+        JThome () {
+            this.$router.push('/scatter_matrix_home')
         }
     }
 }

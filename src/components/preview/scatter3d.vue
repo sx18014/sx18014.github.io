@@ -1,80 +1,18 @@
 <template>
-<el-container>
-  <el-main>
-  <el-row>
-    <el-col :span="18">
-      <el-card class="box" shadow="hover">
-        <div class="card" ref="line_ref"></div>
-    </el-card>
-    </el-col>
-    <el-col :span="6">
-      <el-card class="control" shadow="hover">
-        <el-row>xAxis3D : 
-          <el-select v-model="value1" clearable placeholder="请选择x轴" @change="setAxis_X(value1)">
-            <el-option
-              v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-row>
-        <el-row>yAxis3D : 
-          <el-select v-model="value2" clearable placeholder="请选择y轴" @change="setAxis_Y(value2)">
-            <el-option
-              v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-row>
-        <el-row>zAxis3D : 
-          <el-select v-model="value3" clearable placeholder="请选择z轴" @change="setAxis_Z(value3)">
-            <el-option
-              v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-row>
-    </el-card>
-    </el-col>
-  </el-row>
-  </el-main>
-</el-container>
+    <div class="com-container">
+        <div class="com-chart" ref="line_ref">
+        </div>
+    </div>
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/index.css';
 import 'echarts-gl'
 import axios from 'axios'
 export default {
   data () {
     return {
-      xAxis: 'bifur_num',
-      yAxis: 'mean_std',
-      zAxis: 'length',
-      color: null,
-      symbolSize: null,
-      options: [{
-          value: 'length',
-          label: 'length'
-        }, {
-          value: 'bifur_num',
-          label: 'bifur_num'
-        }, {
-          value: 'mean_sum',
-          label: 'mean_sum'
-        }, {
-          value: 'std_sum',
-          label: 'std_sum'
-        }, {
-          value: 'mean_std',
-          label: 'mean_std'
-        }, {
-          value: 'std_std',
-          label: 'std_std'
-        }],
-        value1: '',
-        value2: '',
-        value3: '',
-        axis: '',
-        x: '',
-        y: '',
-        z: ''
+      // myChart: null
+      CPJSON : null
     }
   },
   // 开始生命周期
@@ -96,56 +34,25 @@ export default {
     getData () {
       console.log(1)
     },
-    // 修改维度对应特征值
-    setAxis_X (value) {
-      this.xAxis = value,
-      this.axis = "x",
-      this.updateChart (this.xAxis)
-    },
-    setAxis_Y (value) {
-      this.yAxis = value,
-      this.axis = "y",
-      this.updateChart (null, this.yAxis)
-    },
-    setAxis_Z (value) {
-      this.zAxis = value,
-      this.axis = "z",
-      this.updateChart (null, null, this.zAxis)
-    },
-    // 重绘图表
-    async updateChart (x, y, z) {
-      // 默认坐标轴对应数值
-      var xAxis = this.xAxis
-      var yAxis = this.yAxis
-      var zAxis = this.zAxis
-
-      console.log(x,y,z)
-
-      // 坐标轴数据发生改变
-      if (x != null) { xAxis = x }
-      if (y != null) { yAxis = y }
-      if (z != null) { zAxis = z }
-
+    async updateChart () {
       const myChart = this.$echarts.init(this.$refs.line_ref)
       const app = {}
       const option = null
       // 特征
       const schema = [
-        { name: 'number', index: 0, text: 'number' },
-        { name: 'name', index: 1, text: 'name' },
-        { name: 'length', index: 2, text: 'length' },
-        { name: 'bifur_num', index: 3, text: 'bifur_num' },
-        { name: 'mean_sum', index: 4, text: 'mean_sum' },
-        { name: 'std_sum', index: 5, text: 'std_sum' },
-        { name: 'mean_std', index: 6, text: 'mean_std' },
-        { name: 'std_std', index: 7, text: 'std_std' }
+        { name: 'name', index: 1 },
+        { name: 'length', index: 2 },
+        { name: 'bifur_num', index: 3 },
+        { name: 'mean_sum', index: 4 },
+        { name: 'std_sum', index: 5 },
+        { name: 'mean_std', index: 6 },
+        { name: 'std_std', index: 7 }
       ]
       
       const fieldIndices = schema.reduce(function (obj, item) {
         obj[item.name] = item.index
         return obj
       }, {})
-
       let fieldNames = schema.map(function (item) {
         return item.name
       })
@@ -167,17 +74,15 @@ export default {
         }
       }
       const config = app.config = {
-        xAxis3D: xAxis,
-        yAxis3D: yAxis,
-        zAxis3D: zAxis,
+        xAxis3D: 'bifur_num',
+        yAxis3D: 'mean_std',
+        zAxis3D: 'length',
         color: 'mean_std',
         symbolSize: 'std_sum',
-
         onChange: function () {
           const max = getMaxOnExtent(data)
           if (data) {
             this.myChart.setOption({
-              tooltip: {},
               visualMap: [{
                 max: max.color / 2
               },
@@ -194,9 +99,6 @@ export default {
                 name: config.zAxis3D
               },
               series: {
-                encode: {
-                  tooltip: [0, 1, 2, 3, 4, 5, 6, 7]
-                },
                 animation: false,
                 dimensions: [
                   config.xAxis3D,
@@ -232,8 +134,7 @@ export default {
         //使用axios获取本地数据
         await axios.get ('https://sx18014.github.io/dist/data/CP.json').then(function (_data) {
         let data = _data.data;
-        // console.log (data)
-        //console.log(value[2])
+        console.log (data)
         const max = getMaxOnExtent (data)
         myChart.setOption({
           tooltip: {},
@@ -292,9 +193,6 @@ export default {
           },
           series: [{
             type: 'scatter3D',
-            encode: {
-              tooltip: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-            },
             dimensions: [
               config.xAxis3D,
               config.yAxis3D,
@@ -333,13 +231,5 @@ export default {
 }
 </script>
 
-<style>
-.box {
-    width: 100%;
-    height: 950px
-}
-.card {
-    width: 100%;
-    height: 850px
-}
+<style lang="less" scoped>
 </style>
