@@ -85,7 +85,7 @@
     <el-col :span="12">
     <el-card class="box-card" shadow="hover">
         <div slot="header">
-            <span>旭日图</span>
+            <span>神经元重建库中脑区类型分布1</span>
             <el-button @click="JTsunburst" icon='el-icon-full-screen'
             style="float: right" circle></el-button>
         </div>
@@ -97,7 +97,7 @@
     <el-col :span="12">
     <el-card class="box-card" shadow="hover">
         <div slot="header">
-            <span>旭日图</span>
+            <span>神经元重建库中脑区类型分布2</span>
             <el-button @click="JTsunburst2" icon='el-icon-full-screen'
             style="float: right" circle></el-button>
         </div>
