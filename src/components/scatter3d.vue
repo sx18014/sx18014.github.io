@@ -173,7 +173,7 @@ export default {
       if (clr != null) { color = clr }
       if (size != null) { symbleSize = size }
 
-      const myChart = this.$echarts.init(this.$refs.line_ref)
+      const myChart = this.$echarts.init(this.$refs.line_ref, "dark")
       const app = {}
       const option = null
       // 特征
@@ -324,12 +324,12 @@ export default {
           grid3D: {
             axisLine: {
               lineStyle: {
-                color: 'black'
+                color: '#fff'
               }
             },
             axisPointer: {
               lineStyle: {
-                color: 'black'
+                color: '#fff'
               }
             },
             viewControl: {

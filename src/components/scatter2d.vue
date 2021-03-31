@@ -284,7 +284,7 @@ export default {
             dimension: 4,
             max: max.symbolSize/2,
             inRange: {
-              symbolSize: [10, 20]
+              symbolSize: [10, 40]
             },
             textStyle: {
               color: '#8B8989'

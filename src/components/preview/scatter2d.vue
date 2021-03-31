@@ -178,7 +178,7 @@ export default {
             dimension: 4,
             max: max.symbolSize/2,
             inRange: {
-              symbolSize: [10, 20]
+              symbolSize: [10, 30]
             },
             textStyle: {
               color: '#8B8989'
