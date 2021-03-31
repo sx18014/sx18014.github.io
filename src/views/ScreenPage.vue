@@ -26,12 +26,12 @@
     <el-col :span="12">
     <el-card class="box-card" shadow="hover">
         <div slot="header">
-            <span>三维柱状图</span>
-            <el-button @click="JTbar3d" icon='el-icon-full-screen'
+            <span>二维散点图</span>
+            <el-button @click="JTscatter2d" icon='el-icon-full-screen'
             style="float: right" circle></el-button>
         </div>
         <div class="card-content">
-            <Bar3d></Bar3d>
+            <Scatter2d></Scatter2d>
         </div>
     </el-card>
     </el-col>
@@ -116,6 +116,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Bar3d from '../components/bar3d.vue'
 import Line3d from '../components/line.vue'
 import Scatter3d_dataset from '../components/scatter3d_dataset.vue'
+import Scatter2d from '../components/preview/scatter2d.vue'
 import Scatter3d from '../components/preview/scatter3d.vue'
 import Sunburst from '../components/sunburst.vue'
 import Sunburst2 from '../components/sunburst2.vue'
@@ -126,6 +127,7 @@ export default {
         Bar3d,
         Line3d,
         Scatter3d_dataset,
+        Scatter2d,
         Scatter3d,
         Sunburst,
         Sunburst2,
@@ -135,6 +137,9 @@ export default {
     methods: {
         JTbar3d () {
             this.$router.push('/bar3d')
+        },
+        JTscatter2d () {
+            this.$router.push('/scatter2d')
         },
         JTscatter3d () {
             this.$router.push('/scatter3d')
@@ -164,7 +169,7 @@ export default {
 <style>
 .box-card {
     width: 100%;
-    height: 500px;
+    height: 700px;
 }
 .box-card-SM {
     width: 100%;
@@ -172,7 +177,7 @@ export default {
 }
 .card-content {
     width: 100%;
-    height: 400px
+    height: 600px
 }
 .card-content-SM {
     width: 100%;

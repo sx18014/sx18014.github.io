@@ -10,36 +10,29 @@
     <el-col :span="6">
       <el-row>
       <el-card class="control" shadow="hover">
-        <el-row>xAxis3D : 
+        <el-row>xAxis : 
           <el-select v-model="value1" placeholder="请选择x轴" @change="setAxis_X(value1)">
             <el-option
               v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-row>
-        <el-row>yAxis3D : 
+        <el-row>yAxis : 
           <el-select v-model="value2" placeholder="请选择y轴" @change="setAxis_Y(value2)">
             <el-option
               v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-row>
-        <el-row>zAxis3D : 
-          <el-select v-model="value3" placeholder="请选择z轴" @change="setAxis_Z(value3)">
-            <el-option
-              v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-row>
         <el-row>color : 
-          <el-select v-model="value4" placeholder="请选择颜色" @change="set_COLOR(value4)">
+          <el-select v-model="value3" placeholder="请选择颜色" @change="set_COLOR(value3)">
             <el-option
               v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-row>
         <el-row>sym_size : 
-          <el-select v-model="value5" placeholder="请选择散点大小" @change="set_SIZE(value5)">
+          <el-select v-model="value4" placeholder="请选择散点大小" @change="set_SIZE(value4)">
             <el-option
               v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
@@ -58,16 +51,14 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/index.css';
 import 'echarts-gl'
 import axios from 'axios'
 export default {
   data () {
     return {
       xAxis: 'bifur_num',
-      yAxis: 'mean_std',
-      zAxis: 'length',
-      color: 'mean_std',
+      yAxis: 'mean_sum',
+      color: 'mean_sum',
       symbolSize: 'std_sum',
       options: [{
           value: 'length',
@@ -89,10 +80,9 @@ export default {
           label: 'std_std'
         }],
         value1: 'bifur_num',
-        value2: 'mean_std',
-        value3: 'length',
-        value4: 'mean_std',
-        value5: 'std_sum',
+        value2: 'mean_sum',
+        value3: 'mean_sum',
+        value4: 'std_sum',
         axis: '',
         x: '',
         y: '',
@@ -118,7 +108,6 @@ export default {
     getData () {
       console.log(1)
     },
-    // 修改维度对应特征值
     setAxis_X (value) {
       this.xAxis = value,
       this.axis = "x",
@@ -129,47 +118,35 @@ export default {
       this.axis = "y",
       this.updateChart (null, this.yAxis)
     },
-    setAxis_Z (value) {
-      this.zAxis = value,
-      this.axis = "z",
-      this.updateChart (null, null, this.zAxis)
-    },
     set_COLOR (value) {
       this.color = value,
       this.axis = "color",
-      this.updateChart (null, null, null, this.color)
+      this.updateChart (null, null, this.color)
     },
     set_SIZE (value) {
       this.symbolSize = value,
       this.axis = "symblesize",
-      this.updateChart (null, null, null, null, this.symbolSize)
+      this.updateChart (null, null, null, this.symbolSize)
     },
-    // 重置初始状态
+
     reset () {
       this.value1 = 'bifur_num'
-      this.value2 = 'mean_std'
-      this.value3 = 'length'
-      this.value4 = 'mean_std'
-      this.value5 = 'std_sum'
-      this.updateChart ('bifur_num', 'mean_std', 'length', 'mean_std', 'std_sum')
-      // 直接刷新页面的方法过于粗暴，加载缓慢
-      // window.location.reload();
+      this.value2 = 'mean_sum'
+      this.value3 = 'mean_sum'
+      this.value4 = 'std_sum'
+      this.updateChart ('bifur_num', 'mean_sum', 'mean_sum', 'std_sum')
     },
-    // 重绘图表
-    async updateChart (x, y, z, clr, size) {
+
+    async updateChart (x, y, clr, size) {
       // 默认坐标轴对应数值
       var xAxis = this.xAxis
       var yAxis = this.yAxis
-      var zAxis = this.zAxis
       var color = this.color
       var symbleSize = this.symbolSize
-
-      console.log(x,y,z)
 
       // 坐标轴数据发生改变
       if (x != null) { xAxis = x }
       if (y != null) { yAxis = y }
-      if (z != null) { zAxis = z }
       if (clr != null) { color = clr }
       if (size != null) { symbleSize = size }
 
@@ -192,7 +169,6 @@ export default {
         obj[item.name] = item.index
         return obj
       }, {})
-
       let fieldNames = schema.map(function (item) {
         return item.name
       })
@@ -214,49 +190,43 @@ export default {
         }
       }
       const config = app.config = {
-        xAxis3D: xAxis,
-        yAxis3D: yAxis,
-        zAxis3D: zAxis,
+        xAxis: xAxis,
+        yAxis: yAxis,
         color: color,
         symbolSize: symbleSize,
-
         onChange: function () {
           const max = getMaxOnExtent(data)
           if (data) {
             this.myChart.setOption({
-              tooltip: {},
               visualMap: [{
                 max: max.color / 2
               },
               {
                 max: max.symbolSize / 2
               }],
-              xAxis3D: {
-                name: config.xAxis3D
+              xAxis: {
+                name: config.xAxis
               },
-              yAxis3D: {
-                name: config.yAxis3D
+              yAxis: {
+                name: config.yAxis
               },
-              zAxis3D: {
-                name: config.zAxis3D
-              },
+              dataZoom: [{
+                type: 'inside'
+              }, {
+                type: 'slider'
+              }],
               series: {
-                encode: {
-                  tooltip: [0, 1, 2, 3, 4, 5, 6, 7]
-                },
                 animation: false,
                 dimensions: [
-                  config.xAxis3D,
-                  config.yAxis3D,
-                  config.yAxis3D,
+                  config.xAxis,
+                  config.yAxis,
                   config.color,
                   config.symbolSiz
                 ],
                 data: data.map(function (item, idx) {
                   return [
-                    item[fieldIndices[config.xAxis3D]],
-                    item[fieldIndices[config.yAxis3D]],
-                    item[fieldIndices[config.zAxis3D]],
+                    item[fieldIndices[config.xAxis]],
+                    item[fieldIndices[config.yAxis]],
                     item[fieldIndices[config.color]],
                     item[fieldIndices[config.symbolSize]],
                     idx
@@ -268,10 +238,10 @@ export default {
         }
       }
       app.configParameters = {}
-      if (!['xAxis3D', 'yAxis3D', 'zAxis3D', 'symbolSize']) {
+      if (!['xAxis', 'yAxis', 'symbolSize']) {
         return
       }
-      ['xAxis3D', 'yAxis3D', 'zAxis3D', 'symbolSize'].forEach(function (fieldName) {
+      ['xAxis', 'yAxis','symbolSize'].forEach(function (fieldName) {
         app.configParameters[fieldName] = {
           options: fieldNames
         }
@@ -279,10 +249,21 @@ export default {
         //使用axios获取本地数据
         await axios.get ('https://sx18014.github.io/dist/data/CP.json').then(function (_data) {
         let data = _data.data;
-        // console.log (data)
-        //console.log(value[2])
+        console.log (data)
         const max = getMaxOnExtent (data)
         myChart.setOption({
+          // 坐标轴值域调整
+          dataZoom: [{
+            type: 'inside',
+          }, {
+            type: 'slider'
+          }, {
+            type: 'inside',
+            orient: 'vertical'
+          }, {
+            type: 'slider',
+            orient: 'vertical'
+          }],
           tooltip: {},
           visualMap: [{
             // 颜色区间
@@ -291,7 +272,7 @@ export default {
             dimension: 3,
              max: max.color/2,
             inRange: {
-              color: ['#c6ffdd', '#fbd786', '#f7797d']
+              color: ['#eaecc6', '#2bc0e4', '#085078']
             },
             textStyle: {
               color: '#8B8989'
@@ -303,25 +284,21 @@ export default {
             dimension: 4,
             max: max.symbolSize/2,
             inRange: {
-              symbolSize: [15, 30]
+              symbolSize: [10, 20]
             },
             textStyle: {
               color: '#8B8989'
             }
           }],
-          xAxis3D: {
-            name: config.xAxis3D,
+          xAxis: {
+            name: config.xAxis,
             type: 'value'
           },
-          yAxis3D: {
-            name: config.yAxis3D,
+          yAxis: {
+            name: config.yAxis,
             type: 'value'
           },
-          zAxis3D: {
-            name: config.zAxis3D,
-            type: 'value'
-          },
-          grid3D: {
+          grid: {
             axisLine: {
               lineStyle: {
                 color: 'black'
@@ -338,22 +315,17 @@ export default {
             }
           },
           series: [{
-            type: 'scatter3D',
-            encode: {
-              tooltip: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-            },
+            type: 'scatter',
             dimensions: [
-              config.xAxis3D,
-              config.yAxis3D,
-              config.yAxis3D,
+              config.xAxis,
+              config.yAxis,
               config.color,
               config.symbolSiz
             ],
             data: data.map(function (item, idx) {
               return [
-                item[fieldIndices[config.xAxis3D]],
-                item[fieldIndices[config.yAxis3D]],
-                item[fieldIndices[config.zAxis3D]],
+                item[fieldIndices[config.xAxis]],
+                item[fieldIndices[config.yAxis]],
                 item[fieldIndices[config.color]],
                 item[fieldIndices[config.symbolSize]],
                 idx
@@ -365,6 +337,7 @@ export default {
               borderWidth: 0.1,
               borderColor: 'rgba(255, 255, 255, 0.6)'
             },
+            // 高亮
             emphasis: {
               itemStyle: {
                 color: '#7FFFD4'
@@ -381,15 +354,7 @@ export default {
 </script>
 
 <style>
-.box {
-    width: 100%;
-    height: 950px
-}
-.card {
-    width: 100%;
-    height: 850px
-}
-.el-row {
-  margin-bottom: 20px;
-}
+ .el-row {
+    margin-bottom: 20px;
+  }
 </style>

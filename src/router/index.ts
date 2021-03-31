@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Screen from '../views/ScreenPage.vue'
 import scatter_matrix_home from '../views/ScatterMatrixHome.vue'
 import Line from '../components/line.vue'
+import Scatter2d from '../components/scatter2d.vue'
 import Scatter3d from '../components/scatter3d.vue'
 // import Scatter3d_dataset from '../components/scatter3d_dataset.vue'
 import Sunburst from '../components/sunburst.vue'
@@ -26,6 +27,7 @@ const routes: Array<RouteConfig> = [
     component: Screen,
   },
   { path: '/line', component: Line },
+  { path: '/scatter2d', component: Scatter2d },
   { path: '/scatter3d', component: Scatter3d },
   { path: '/sunburst', component: Sunburst },
   { path: '/sunburst2', component: Sunburst2 },
