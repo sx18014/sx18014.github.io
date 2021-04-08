@@ -10,6 +10,7 @@ import Sunburst from '../components/sunburst.vue'
 import Sunburst2 from '../components/sunburst2.vue'
 import Bar3d from '../components/bar3d.vue'
 import Radar from '../components/radar.vue'
+import Heatmap from '../components/heatmap.vue'
 import ScatterMatrix from '../components/scatter_matrix.vue'
 import CP from '../components/scatter_matrix/SM_CP.vue'
 import MOp from '../components/scatter_matrix/SM_MOp.vue'
@@ -33,6 +34,7 @@ const routes: Array<RouteConfig> = [
   { path: '/sunburst2', component: Sunburst2 },
   { path: '/bar3d', component: Bar3d },
   { path: '/radar', component: Radar },
+  { path: '/heatmap', component: Heatmap },
   { path: '/scatter_matrix', component: ScatterMatrix },
 
   { // 散点矩阵主页
