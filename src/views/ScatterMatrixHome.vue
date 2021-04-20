@@ -19,7 +19,7 @@
         <template slot="title"><i class="el-icon-caret-right"></i>MOs</template>
       </el-menu-item>
       <el-menu-item index="/SM_SSp_bfd">
-        <template slot="title"><i class="el-icon-caret-right"></i>MOs</template>
+        <template slot="title"><i class="el-icon-caret-right"></i>SSp-bfd</template>
       </el-menu-item>
     </el-menu>
   </el-aside>

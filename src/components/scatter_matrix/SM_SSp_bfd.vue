@@ -42,7 +42,7 @@ export default {
         { name: 'std_std', index: 7, text: 'std_std' },
       ];
 
-      var data = await axios.get('https://sx18014.github.io/dist/data/MOS.json')
+      var data = await axios.get('https://sx18014.github.io/dist/data/SSP-bfd.json')
       var rawData = data.data
       var CATEGORY_DIM_COUNT = 7;
       var GAP = 2;
@@ -142,13 +142,13 @@ export default {
         },
         visualMap: {
           type: 'piecewise',
-          categories: ["MOS"],
+          categories: ["SSP-bfd"],
           dimension: CATEGORY_DIM,
           orient: 'horizontal',
           top: 0,
           left: 'center',
           inRange: {
-            color: ['#91cc75']
+            color: ['#0098d9']
           },
           outOfRange: {
             color: 'rgba(248,248,248,0.5)'
