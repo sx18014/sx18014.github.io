@@ -2,12 +2,10 @@
 <el-container>
   <el-main>
   <el-row :gutter="18">
-    <el-col :span="18">
-      <el-card class="box" shadow="hover">
+    <el-col :span="16">
         <div class="card" ref="line_ref"></div>
-    </el-card>
     </el-col>
-    <el-col :span="6">
+    <el-col :span="8">
       <el-row>
       <el-card class="control" shadow="hover">
         <el-row>xAxis : 
@@ -51,6 +49,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import 'echarts-gl'
 import axios from 'axios'
 export default {
@@ -138,6 +137,8 @@ export default {
     },
 
     async updateChart (x, y, clr, size) {
+      $('#pic2').width($('#pic2').width());
+      $('#pic2').height($('#pic2').height());
       // 默认坐标轴对应数值
       var xAxis = this.xAxis
       var yAxis = this.yAxis
@@ -347,6 +348,12 @@ export default {
         })
       })
       option && this.myChart.setOption(option)
+      // 自适应页面
+	    window.onresize = function () {
+	    	setTimeout (function () {
+          myChart.resize();
+        },1)
+	    }
       console.log(2)
     }
   }
@@ -354,7 +361,10 @@ export default {
 </script>
 
 <style>
- .el-row {
-    margin-bottom: 20px;
-  }
+.el-col {
+  position: absolute!
+}
+.el-row {
+  margin-bottom: 20px;
+}
 </style>

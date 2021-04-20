@@ -2,12 +2,10 @@
 <el-container>
   <el-main>
   <el-row :gutter="18">
-    <el-col :span="18">
-      <el-card class="box" shadow="hover">
+    <el-col :span="16">
         <div class="card" ref="line_ref"></div>
-    </el-card>
     </el-col>
-    <el-col :span="6">
+    <el-col :span="8">
       <el-row>
       <el-card class="control" shadow="hover">
         <el-row>xAxis3D : 
@@ -289,7 +287,7 @@ export default {
             top: 10,
             calculable: true,
             dimension: 3,
-             max: max.color/2,
+            max: max.color/2,
             inRange: {
               color: ['#c6ffdd', '#fbd786', '#f7797d']
             },
@@ -374,6 +372,9 @@ export default {
         })
       })
       option && this.myChart.setOption(option)
+      window.onresize = function () {
+	    	myChart.resize();
+	    }
       console.log(2)
     }
   }
@@ -386,8 +387,8 @@ export default {
     height: 950px
 }
 .card {
-    width: 100%;
-    height: 850px
+    width: 100% !important;
+    height: 750px !important
 }
 .el-row {
   margin-bottom: 20px;

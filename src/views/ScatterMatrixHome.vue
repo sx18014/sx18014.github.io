@@ -18,6 +18,9 @@
       <el-menu-item index="/SM_MOs">
         <template slot="title"><i class="el-icon-caret-right"></i>MOs</template>
       </el-menu-item>
+      <el-menu-item index="/SM_SSp_bfd">
+        <template slot="title"><i class="el-icon-caret-right"></i>MOs</template>
+      </el-menu-item>
     </el-menu>
   </el-aside>
   <!--内容主体-->

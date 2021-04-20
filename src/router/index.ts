@@ -15,6 +15,7 @@ import ScatterMatrix from '../components/scatter_matrix.vue'
 import CP from '../components/scatter_matrix/SM_CP.vue'
 import MOp from '../components/scatter_matrix/SM_MOp.vue'
 import MOs from '../components/scatter_matrix/SM_MOs.vue'
+import SSp_bfd from '../components/scatter_matrix/SM_SSp_bfd.vue'
 
 Vue.use(VueRouter)
 
@@ -43,7 +44,8 @@ const routes: Array<RouteConfig> = [
     children: [
       { path: '/SM_CP', component: CP },
       { path: '/SM_MOp', component: MOp },
-      { path: '/SM_MOs', component: MOs }
+      { path: '/SM_MOs', component: MOs },
+      { path: '/SM_SSp_bfd', component: SSp_bfd }
     ]
   },
 ]
