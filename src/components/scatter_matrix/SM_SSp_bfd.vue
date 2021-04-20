@@ -142,7 +142,7 @@ export default {
         },
         visualMap: {
           type: 'piecewise',
-          categories: ["SSP-bfd"],
+          categories: ["SSp-bfd"],
           dimension: CATEGORY_DIM,
           orient: 'horizontal',
           top: 0,
