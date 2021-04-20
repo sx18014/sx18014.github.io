@@ -22,6 +22,34 @@
 -->
 <el-container style="height: 100%; border: 1px solid #eee">
 <el-main>
+<!-- 第一行 -->
+<el-row :gutter="8">
+    <el-col :span="12">
+    <el-card class="box-card" shadow="hover">
+        <div slot="header">
+            <span>神经元重建库中脑区类型分布1</span>
+            <el-button @click="JTsunburst" icon='el-icon-full-screen'
+            style="float: right" circle></el-button>
+        </div>
+        <div class="card-content">
+            <Sunburst></Sunburst>
+        </div> 
+    </el-card>
+    </el-col>
+    <el-col :span="12">
+    <el-card class="box-card" shadow="hover">
+        <div slot="header">
+            <span>神经元重建库中脑区类型分布2</span>
+            <el-button @click="JTsunburst2" icon='el-icon-full-screen'
+            style="float: right" circle></el-button>
+        </div>
+        <div class="card-content">
+            <Sunburst2></Sunburst2>
+        </div> 
+    </el-card>
+    </el-col>
+</el-row>
+<!-- 第二行 -->
 <el-row :gutter="8">
     <el-col :span="12">
     <el-card class="box-card" shadow="hover">
@@ -63,46 +91,17 @@
     </el-card>
     </el-col>
 </el-row> -->
-<!-- 第二行 -->
+<!-- 第三行 -->
 <el-row>
     <el-col>
     <el-card class="box-card-SM" shadow="hover">
         <div slot="header">
             <span>散点矩阵和平行坐标</span>
-            <el-button @click="JTscattermatrix" icon='el-icon-full-screen'
-            style="float: right" circle></el-button>
-            <el-button @click="JThome" icon='el-icon-s-home'
+            <el-button @click="JTSSP" icon='el-icon-full-screen'
             style="float: right" circle></el-button>
         </div>
         <div class="card-content-SM">
-            <ScatterMatrix></ScatterMatrix>
-        </div> 
-    </el-card>
-    </el-col>
-</el-row>
-<!-- 第三行 -->
-<el-row :gutter="8">
-    <el-col :span="12">
-    <el-card class="box-card" shadow="hover">
-        <div slot="header">
-            <span>神经元重建库中脑区类型分布1</span>
-            <el-button @click="JTsunburst" icon='el-icon-full-screen'
-            style="float: right" circle></el-button>
-        </div>
-        <div class="card-content">
-            <Sunburst></Sunburst>
-        </div> 
-    </el-card>
-    </el-col>
-    <el-col :span="12">
-    <el-card class="box-card" shadow="hover">
-        <div slot="header">
-            <span>神经元重建库中脑区类型分布2</span>
-            <el-button @click="JTsunburst2" icon='el-icon-full-screen'
-            style="float: right" circle></el-button>
-        </div>
-        <div class="card-content">
-            <Sunburst2></Sunburst2>
+            <SSpall></SSpall>
         </div> 
     </el-card>
     </el-col>
@@ -122,6 +121,8 @@ import Sunburst from '../components/sunburst.vue'
 import Sunburst2 from '../components/sunburst2.vue'
 import ScatterMatrix from '../components/scatter_matrix.vue'
 import ScatterMatrixHome from './ScatterMatrixHome.vue'
+import SSpall from '../components/scatter_matrix/SM_SSp_all.vue'
+
 export default {
     components: {
         Bar3d,
@@ -132,7 +133,8 @@ export default {
         Sunburst,
         Sunburst2,
         ScatterMatrix,
-        ScatterMatrixHome
+        ScatterMatrixHome,
+        SSpall
     },
     methods: {
         JTbar3d () {
@@ -156,12 +158,13 @@ export default {
         JTscatterdata () {
             this.$router.push('/scatter3d_dataset')
         },
-        JTscattermatrix () {
-            this.$router.push('/scatter_matrix')
+        JTSSP () {
+            this.$router.push('/SM_SSp_all')
         },
+        /*
         JThome () {
             this.$router.push('/scatter_matrix_home')
-        }
+        } */
     }
 }
 </script>

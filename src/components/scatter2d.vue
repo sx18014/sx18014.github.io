@@ -2,10 +2,10 @@
 <el-container>
   <el-main>
   <el-row :gutter="18">
-    <el-col :span="16">
+    <el-col :span="18">
         <div class="card" ref="line_ref"></div>
     </el-col>
-    <el-col :span="8">
+    <el-col :span="6">
       <el-row>
       <el-card class="control" shadow="hover">
         <el-row>xAxis : 

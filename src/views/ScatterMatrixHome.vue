@@ -18,8 +18,11 @@
       <el-menu-item index="/SM_MOs">
         <template slot="title"><i class="el-icon-caret-right"></i>MOs</template>
       </el-menu-item>
-      <el-menu-item index="/SM_SSp_bfd">
-        <template slot="title"><i class="el-icon-caret-right"></i>SSp-bfd</template>
+      <el-menu-item index="/SM_SSp_all">
+        <template slot="title"><i class="el-icon-caret-right"></i>SSp</template>
+      </el-menu-item>
+      <el-menu-item index="/SM_VPM">
+        <template slot="title"><i class="el-icon-caret-right"></i>VPM</template>
       </el-menu-item>
     </el-menu>
   </el-aside>
@@ -53,9 +56,9 @@ export default {
 
 <style>
   .el-header {
-    background-color: #33475c;
+    background-color: #31353a;
     color: white;
-    line-height: 30px;
+    line-height: 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
