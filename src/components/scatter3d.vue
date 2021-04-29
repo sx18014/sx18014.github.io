@@ -2,12 +2,22 @@
 <el-container>
   <el-main>
   <el-row :gutter="18">
-    <el-col :span="18">
-        <div class="card" ref="line_ref"></div>
-    </el-col>
+    <el-col :span="18"><div class="card" ref="line_ref"></div></el-col>
     <el-col :span="6">
+    <el-card class="control" shadow="hover">
       <el-row>
-      <el-card class="control" shadow="hover">
+        <el-row>切换数据来源脑区：</el-row>
+        <el-row>
+          <el-select v-model="value6" placeholder="请选择脑区" @change="setRegion(value6)">
+            <el-option
+              v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-row>
+      </el-row>
+      <el-divider></el-divider>
+      <el-row>
+        <el-row>切换坐标轴对应特征值：</el-row>
         <el-row>xAxis3D : 
           <el-select v-model="value1" placeholder="请选择x轴" @change="setAxis_X(value1)">
             <el-option
@@ -43,12 +53,52 @@
             </el-option>
           </el-select>
         </el-row>
+        <el-row>
+          <el-button @click="reset" style="float: left" type="danger" plain round>RESET</el-button>
+        </el-row>
+    </el-row>
+    <el-divider></el-divider>
+    <el-row>特征值信息：</el-row>
+    <el-row :gutter="25">
+      <el-col :span="6">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支长度">
+        <el-button slot="reference">length</el-button>
+      </el-popover>
+      </el-col>
+      <el-col :span="6">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值；">
+        <el-button slot="reference">bifur_num</el-button>
+      </el-popover>
+      </el-col>
+    </el-row>
+    <el-row :gutter="25">
+      <el-col :span="8">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值；">
+        <el-button slot="reference">mean_sum</el-button>
+      </el-popover>
+      </el-col>
+      <el-col :span="7">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求标准差；">
+        <el-button slot="reference">std_sum</el-button>
+      </el-popover>
+      </el-col>
+      <el-col :span="8">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率标准差作为分支曲率，各分支曲率结果求标准差；">
+        <el-button slot="reference">std_std</el-button>
+      </el-popover>
+      </el-col>
+    </el-row>
     </el-card>
-    </el-row>
-    <el-row>
-    <el-button @click="reset"
-      style="float: right" type="danger" plain round>RESET</el-button>
-    </el-row>
     </el-col>
   </el-row>
   </el-main>
@@ -67,6 +117,8 @@ export default {
       zAxis: 'length',
       color: 'mean_std',
       symbolSize: 'std_sum',
+      style: 'dark',
+      region: 'CP',
       options: [{
           value: 'length',
           label: 'length'
@@ -86,11 +138,28 @@ export default {
           value: 'std_std',
           label: 'std_std'
         }],
+        options2: [{
+          value: 'CP',
+          label: 'CP'
+        }, {
+          value: 'MOP',
+          label: 'MOP'
+        }, {
+          value: 'MOS',
+          label: 'MOS'
+        }, {
+          value: 'SSP-all',
+          label: 'SSP-all'
+        }, {
+          value: 'VPM',
+          label: 'VPM'
+        }],
         value1: 'bifur_num',
         value2: 'mean_std',
         value3: 'length',
         value4: 'mean_std',
         value5: 'std_sum',
+        value6: 'CP',
         axis: '',
         x: '',
         y: '',
@@ -142,6 +211,17 @@ export default {
       this.axis = "symblesize",
       this.updateChart (null, null, null, null, this.symbolSize)
     },
+    set_STYLE (value) {
+      this.style = "dark",
+      this.axis = "style",
+      this.updateChart (null, null, null, null, null, this.style)
+    },
+    setRegion (value) {
+      this.region = value,
+      this.axis = "region",
+      this.updateChart (null, null, null, null, null, this.region)
+    },
+
     // 重置初始状态
     reset () {
       this.value1 = 'bifur_num'
@@ -149,12 +229,17 @@ export default {
       this.value3 = 'length'
       this.value4 = 'mean_std'
       this.value5 = 'std_sum'
-      this.updateChart ('bifur_num', 'mean_std', 'length', 'mean_std', 'std_sum')
+      this.value6 = 'CP'
+      this.updateChart ('bifur_num', 'mean_std', 'length', 'mean_std', 'std_sum', 'CP')
       // 直接刷新页面的方法过于粗暴，加载缓慢
       // window.location.reload();
     },
     // 重绘图表
-    async updateChart (x, y, z, clr, size) {
+    async updateChart (x, y, z, clr, size, reg) {
+
+      // 默认脑区
+      var region = this.region
+
       // 默认坐标轴对应数值
       var xAxis = this.xAxis
       var yAxis = this.yAxis
@@ -162,7 +247,10 @@ export default {
       var color = this.color
       var symbleSize = this.symbolSize
 
-      console.log(x,y,z)
+      //根路径
+      var ROOT_PATH = 'https://sx18014.github.io/dist/data/'
+
+      console.log(x,y,z,clr,size,reg)
 
       // 坐标轴数据发生改变
       if (x != null) { xAxis = x }
@@ -170,6 +258,7 @@ export default {
       if (z != null) { zAxis = z }
       if (clr != null) { color = clr }
       if (size != null) { symbleSize = size }
+      if (reg != null) { region = reg }
 
       const myChart = this.$echarts.init(this.$refs.line_ref, "dark")
       const app = {}
@@ -217,6 +306,7 @@ export default {
         zAxis3D: zAxis,
         color: color,
         symbolSize: symbleSize,
+        region: region,
 
         onChange: function () {
           const max = getMaxOnExtent(data)
@@ -275,7 +365,7 @@ export default {
         }
       })
         //使用axios获取本地数据
-        await axios.get ('https://sx18014.github.io/dist/data/CP.json').then(function (_data) {
+        await axios.get (ROOT_PATH + region + '.json').then(function (_data) {
         let data = _data.data;
         // console.log (data)
         //console.log(value[2])

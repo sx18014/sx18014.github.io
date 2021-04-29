@@ -1,13 +1,25 @@
 <template>
 <el-container>
   <el-main>
-  <el-row :gutter="18">
+  <el-row :gutter="30">
     <el-col :span="18">
-        <div class="card" ref="line_ref"></div>
+      <div class="card" ref="line_ref"></div>
     </el-col>
     <el-col :span="6">
-      <el-row>
       <el-card class="control" shadow="hover">
+      <el-row>
+        <el-row>切换数据来源脑区：</el-row>
+        <el-row>
+          <el-select v-model="value5" placeholder="请选择脑区" @change="setRegion(value5)">
+            <el-option
+              v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-row>
+      </el-row>
+      <el-divider></el-divider>
+      <el-row>
+        <el-row>切换坐标轴对应特征值：</el-row>
         <el-row>xAxis : 
           <el-select v-model="value1" placeholder="请选择x轴" @change="setAxis_X(value1)">
             <el-option
@@ -36,12 +48,52 @@
             </el-option>
           </el-select>
         </el-row>
+        <el-row>
+          <el-button @click="reset" style="float: left" type="danger" plain round>RESET</el-button>
+        </el-row>
+    </el-row>
+    <el-divider></el-divider>
+    <el-row>特征值信息：</el-row>
+    <el-row :gutter="25">
+      <el-col :span="6">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支长度">
+        <el-button slot="reference">length</el-button>
+      </el-popover>
+      </el-col>
+      <el-col :span="6">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值；">
+        <el-button slot="reference">bifur_num</el-button>
+      </el-popover>
+      </el-col>
+    </el-row>
+    <el-row :gutter="25">
+      <el-col :span="8">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值；">
+        <el-button slot="reference">mean_sum</el-button>
+      </el-popover>
+      </el-col>
+      <el-col :span="7">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求标准差；">
+        <el-button slot="reference">std_sum</el-button>
+      </el-popover>
+      </el-col>
+      <el-col :span="8">
+      <el-popover
+        placement="bottom" width="100" trigger="click"
+        content="分支上所有点的曲率标准差作为分支曲率，各分支曲率结果求标准差；">
+        <el-button slot="reference">std_std</el-button>
+      </el-popover>
+      </el-col>
+    </el-row>
     </el-card>
-    </el-row>
-    <el-row>
-    <el-button @click="reset"
-      style="float: right" type="danger" plain round>RESET</el-button>
-    </el-row>
     </el-col>
   </el-row>
   </el-main>
@@ -59,6 +111,7 @@ export default {
       yAxis: 'mean_sum',
       color: 'mean_sum',
       symbolSize: 'std_sum',
+      region: 'CP',
       options: [{
           value: 'length',
           label: 'length'
@@ -78,10 +131,27 @@ export default {
           value: 'std_std',
           label: 'std_std'
         }],
+        options2: [{
+          value: 'CP',
+          label: 'CP'
+        }, {
+          value: 'MOP',
+          label: 'MOP'
+        }, {
+          value: 'MOS',
+          label: 'MOS'
+        }, {
+          value: 'SSP-all',
+          label: 'SSP-all'
+        }, {
+          value: 'VPM',
+          label: 'VPM'
+        }],
         value1: 'bifur_num',
         value2: 'mean_sum',
         value3: 'mean_sum',
         value4: 'std_sum',
+        value5: 'CP',
         axis: '',
         x: '',
         y: '',
@@ -127,29 +197,41 @@ export default {
       this.axis = "symblesize",
       this.updateChart (null, null, null, this.symbolSize)
     },
+    setRegion (value) {
+      this.region = value,
+      this.axis = "region",
+      this.updateChart (null, null, null, null, this.region)
+    },
 
     reset () {
       this.value1 = 'bifur_num'
       this.value2 = 'mean_sum'
       this.value3 = 'mean_sum'
       this.value4 = 'std_sum'
-      this.updateChart ('bifur_num', 'mean_sum', 'mean_sum', 'std_sum')
+      this.value5 = 'CP'
+      this.updateChart ('bifur_num', 'mean_sum', 'mean_sum', 'std_sum', 'CP')
     },
 
-    async updateChart (x, y, clr, size) {
+    async updateChart (x, y, clr, size, reg) {
       $('#pic2').width($('#pic2').width());
       $('#pic2').height($('#pic2').height());
+
+      // 默认脑区
+      var region = this.region
       // 默认坐标轴对应数值
       var xAxis = this.xAxis
       var yAxis = this.yAxis
       var color = this.color
       var symbleSize = this.symbolSize
+      //根路径
+      var ROOT_PATH = 'https://sx18014.github.io/dist/data/'
 
-      // 坐标轴数据发生改变
+      // 选项数据发生改变
       if (x != null) { xAxis = x }
       if (y != null) { yAxis = y }
       if (clr != null) { color = clr }
       if (size != null) { symbleSize = size }
+      if (reg != null) { region = reg }
 
       const myChart = this.$echarts.init(this.$refs.line_ref)
       const app = {}
@@ -195,6 +277,7 @@ export default {
         yAxis: yAxis,
         color: color,
         symbolSize: symbleSize,
+        region: region,
         onChange: function () {
           const max = getMaxOnExtent(data)
           if (data) {
@@ -248,7 +331,7 @@ export default {
         }
       })
         //使用axios获取本地数据
-        await axios.get ('https://sx18014.github.io/dist/data/CP.json').then(function (_data) {
+        await axios.get (ROOT_PATH + region + '.json').then(function (_data) {
         let data = _data.data;
         console.log (data)
         const max = getMaxOnExtent (data)
@@ -285,7 +368,7 @@ export default {
             dimension: 4,
             max: max.symbolSize/2,
             inRange: {
-              symbolSize: [10, 40]
+              symbolSize: [5, 30]
             },
             textStyle: {
               color: '#8B8989'
