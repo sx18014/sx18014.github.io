@@ -63,14 +63,14 @@
       <el-col :span="6">
       <el-popover
         placement="bottom" width="100" trigger="click"
-        content="分支长度">
+        content="节点和父节点的距离和">
         <el-button slot="reference">length</el-button>
       </el-popover>
       </el-col>
       <el-col :span="6">
       <el-popover
         placement="bottom" width="100" trigger="click"
-        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值；">
+        content="分叉的数量">
         <el-button slot="reference">bifur_num</el-button>
       </el-popover>
       </el-col>
@@ -79,21 +79,21 @@
       <el-col :span="8">
       <el-popover
         placement="bottom" width="100" trigger="click"
-        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值；">
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求均值">
         <el-button slot="reference">mean_sum</el-button>
       </el-popover>
       </el-col>
       <el-col :span="7">
       <el-popover
         placement="bottom" width="100" trigger="click"
-        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求标准差；">
+        content="分支上所有点的曲率求和作为分支曲率，各分支曲率结果求标准差">
         <el-button slot="reference">std_sum</el-button>
       </el-popover>
       </el-col>
       <el-col :span="8">
       <el-popover
         placement="bottom" width="100" trigger="click"
-        content="分支上所有点的曲率标准差作为分支曲率，各分支曲率结果求标准差；">
+        content="分支上所有点的曲率标准差作为分支曲率，各分支曲率结果求标准差">
         <el-button slot="reference">std_std</el-button>
       </el-popover>
       </el-col>
@@ -142,11 +142,11 @@ export default {
           value: 'CP',
           label: 'CP'
         }, {
-          value: 'MOP',
-          label: 'MOP'
+          value: 'MOp',
+          label: 'MOp'
         }, {
-          value: 'MOS',
-          label: 'MOS'
+          value: 'MOs',
+          label: 'MOs'
         }, {
           value: 'SSP-all',
           label: 'SSP-all'

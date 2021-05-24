@@ -207,7 +207,7 @@ option = {
         type: 'sunburst',
 
         data: data,
-        radius: [60, '95%'],
+        radius: [0, '95%'],
         sort: null,
 
         emphasis: {
